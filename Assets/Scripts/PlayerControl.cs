@@ -9,8 +9,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float rotatePlayer;
     private Vector2 movement;
     private Vector2 rotation;
-    [SerializeField] private Ray ray;
-    [SerializeField]Transform target;
+    private Ray ray;
+
     public GameObject mousePos;
     [SerializeField] private LayerMask mask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
          Camera =FindAnyObjectByType<Camera>();
         rb = GetComponent<Rigidbody>();
         moveAction.action.Enable();
-        lookAction.action.Enable();
+       // lookAction.action.Enable();
     }
 
 
@@ -30,12 +30,17 @@ public class PlayerControl : MonoBehaviour
        movement = moveAction.action.ReadValue<Vector2>();
         // rotation = lookAction.action.ReadValue<Vector2>();
        ray = Camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        mousePos.transform.position = ray.direction;
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit))
+        {
+            Vector3 position=hit.point;
+            mousePos.transform.position = position;
+        }
+       // mousePos.transform.position = ray.direction;
 
-        target = mousePos.transform;
-        
+      
        
-        print(ray);
+     
         
     }
 
@@ -49,7 +54,7 @@ public class PlayerControl : MonoBehaviour
         // Vector3 lookDir = new(rotation.x, 0f, rotation.y);
         //Vector3 lookVelocity = lookDir * 0.5f;
 
-        
+  
         var rotation = Quaternion.LookRotation(mousePos.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation,
             rotation, Time.deltaTime * rotatePlayer);
