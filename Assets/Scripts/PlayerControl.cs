@@ -14,7 +14,11 @@ public class PlayerControl : MonoBehaviour
     public GameObject mousePos;
     [SerializeField] private GameObject bulletToBeShot;
     [SerializeField] private gun gunScript;
-
+   
+    
+    [SerializeField] float projectileSpeed;
+    
+    
     [SerializeField] private LayerMask mask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Camera Camera;
@@ -64,7 +68,9 @@ public class PlayerControl : MonoBehaviour
         if(Physics.Raycast(ray, out hit))
         {
             Vector3 position=hit.point;
-            mousePos.transform.position = position;
+            Vector3 positionCorrection = new Vector3(position.x,transform.position.y,position.z);
+            mousePos.transform.position = positionCorrection;
+            
         }
        
 
@@ -83,7 +89,10 @@ public class PlayerControl : MonoBehaviour
             gunScript.setBool(false);
             var scale = bulletToBeShot.GetComponent<Transform>();
             var rb = bulletToBeShot.GetComponent<Rigidbody>();
-            rb.AddForce(Vector3.forward * 500f, ForceMode.Impulse);
+            Vector3 temp = Vector3.forward*projectileSpeed;
+            Vector3 shootDir= gameObject.transform.localEulerAngles*projectileSpeed;
+            if (shootDir.x == 0) { print("Nopeutta ammuksille ei ole asetettu"); }
+            rb.AddForce(temp, ForceMode.Impulse);
             // shoot here!
 
         }
@@ -95,10 +104,12 @@ public class PlayerControl : MonoBehaviour
         // Vector3 lookDir = new(rotation.x, 0f, rotation.y);
         //Vector3 lookVelocity = lookDir * 0.5f;
 
-  // we set rotation and trough slerp determin the speed at which the player rotates. 0 stops player;
+        // we set rotation and trough slerp determin the speed at which the player rotates. 0 stops player;
+       
         var rotation = Quaternion.LookRotation(mousePos.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation,
-            rotation, Time.deltaTime * rotatePlayer);
+           rotation, Time.deltaTime * rotatePlayer);
+       
         rb.linearVelocity= new Vector3(velocity.x,0, velocity.z);
      
 

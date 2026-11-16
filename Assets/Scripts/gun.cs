@@ -3,7 +3,7 @@ using UnityEngine;
 public class gun : MonoBehaviour
 {
     [SerializeField] GameObject ammo;
-    [SerializeField] private Transform muzzle;
+    public  Transform muzzle;
     [SerializeField] private bool beingShot;
     [SerializeField] private PlayerControl player;
 
@@ -33,8 +33,6 @@ public class gun : MonoBehaviour
         beingShot = b;
 
     }
-
-
 
 
 
