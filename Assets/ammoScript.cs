@@ -18,7 +18,7 @@ public class ammoScript : MonoBehaviour
         lifeTime-= Time.deltaTime;
         if (lifeTime < 0)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 

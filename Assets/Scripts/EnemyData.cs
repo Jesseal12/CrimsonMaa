@@ -5,7 +5,7 @@ public class EnemyData : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
    public GameObject[] players;
-    public float movementSpeed=0.005f;
+    public float movementSpeed=2f;
     void Start()
     {
         players =GameObject.FindGameObjectsWithTag("Player");
@@ -14,7 +14,8 @@ public class EnemyData : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-       // transform.LookAt(players[0].transform.position);
-       // gameObject.transform.position += players[0].transform.position-gameObject.transform.position * movementSpeed * Time.deltaTime;
+        transform.LookAt(players[0].transform.position);
+        var movement = movementSpeed*Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, players[0].transform.position, movement);
     }
 }

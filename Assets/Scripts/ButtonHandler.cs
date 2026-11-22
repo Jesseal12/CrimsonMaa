@@ -37,7 +37,8 @@ public class ButtonHandler : MonoBehaviour
   public void Settings()
     {
 
-
+        mainMenuPanel.SetActive(false);
+        settingsPanel.SetActive(true);
 
     }
 
